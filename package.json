@@ -1,0 +1,11 @@
+{
+  "name": "config-assign",
+  "version": "1.0.0",
+  "description": "A configurable alternative of Object.assign",
+  "main": "objectAssign.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "FZs",
+  "license": "MIT"
+}
