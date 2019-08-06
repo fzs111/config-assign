@@ -23,9 +23,9 @@ Run the following command to install:
 ## 2. Usage <a id="usage">
 ### 2.1 Require <a id="usage-require">
 Obtain the function like this:
-
-    const configAssign = require('config-assign')
-
+```js
+const configAssign = require('config-assign')
+```
 ### 2.2 Syntax <a id="usage-syntax">
 Syntax:
 ```js
@@ -228,13 +228,13 @@ const source = {baz:1, get foo(){return this.baz}},
 }
 ```
 ## 4. All together... <a id="all_together">
-You got the power!
-Combine all options together, and reach anything you want.
+You got the power!  
+Combine all options together, and reach anything you want.  
 If you have a question, recommendation, bug or a feature request, open an issue in the [Github repository][github].
 ## 5. See also <a id="see_also">
 [`Object.assign`][assign] - Similar, native JS function, without options
 ## 6. License <a id="license">
-[MIT © 2019 fzs111][mit]
+Licensed under: [MIT © 2019 fzs111][mit]
 
 [github]: https://github.com/fzs111/config-assign
 [mit]: https://github.com/fzs111/config-assign/blob/master/LICENSE
