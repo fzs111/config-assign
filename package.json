@@ -3,13 +3,26 @@
   "version": "1.0.0",
   "author": "fzs111",
   "description": "A configurable alternative of Object.assign",
-  "keywords": ["Object.assign","object","assign","config","configurable","option","extend","merge","ES6","properties"],
-  "main": "objectAssign.js",
+  "keywords": [
+    "Object.assign",
+    "object",
+    "assign",
+    "config",
+    "configurable",
+    "option",
+    "extend",
+    "merge",
+    "ES6",
+    "properties"
+  ],
+  "main": "configAssign.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "license": "MIT",
   "homepage": "https://github.com/fzs111/config-assign",
-  "bugs":{"url":"https://github.com/fzs111/config-assign/issues"},
-  "repository":"github:fzs111/config-assign"
+  "bugs": {
+    "url": "https://github.com/fzs111/config-assign/issues"
+  },
+  "repository": "github:fzs111/config-assign"
 }
