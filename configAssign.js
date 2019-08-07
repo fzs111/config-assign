@@ -1,4 +1,7 @@
-module.exports = function objectAssign(target, ...args) {
+//Licensed under MIT (c) 2019 fzs111
+//Visit this project on GitHub: https://github.com/fzs111/config-assign/
+
+module.exports = function configAssign(target, ...args) {
   let success = true;
   const
     options = Object.assign({
@@ -34,21 +37,26 @@ module.exports = function objectAssign(target, ...args) {
         if (options.descriptors) {
           delete value.value;
           success = Reflect.defineProperty(obj, prop, value);
-        }
+        };
         return Reflect.set(obj, prop, value.value) && success;
       };
     };
-  if (!options.mutate) target = objectAssign({}, target, Object.assign({}, options, {
-    mutate: true,
-    recursive: 0
-  }));
+  if (!options.mutate){
+    const clone=(obj)=>{
+	    let proto=Object.getPrototypeOf(obj);
+	    const desc=Object.getOwnPropertyDescriptors(obj);
+	    if(proto) proto=clone(proto);
+	    return Object.create(proto,desc);
+    };
+    target = clone(target);
+  };
   args.forEach(source => {
     const foreach = prop => {
       if (options.stopOnError && !success) return;
       if (!options.nonEnumerable && !get(prop).enumerable) return;
       if (options.filter && !options.filter.call(target, prop, target, source)) return;
-      if (options.recursive && source !== target && typeof get(target, prop).value === "object" && typeof get(source, prop).value === "object") {
-        const value = objectAssign(get(target, prop).value, get(source, prop).value, Object.assign({}, options, {
+      if (Math.floor(options.recursive) && source !== target && typeof get(target, prop).value === "object" && typeof get(source, prop).value === "object") {
+        const value = configAssign(get(target, prop).value, get(source, prop).value, Object.assign({}, options, {
           returnBool: true,
           recursive: options.recursive - 1,
           mutate: false
@@ -63,5 +71,5 @@ module.exports = function objectAssign(target, ...args) {
   });
   if (success) return target;
   else if (options.returnBool) return false;
-  else throw new Error('Object assign failed');
+  else throw new Error('configAssign failed');
 };
