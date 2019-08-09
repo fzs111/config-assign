@@ -1,3 +1,4 @@
+
 # config-assign
 > A configurable alternative of [`Object.assign`][assign]
 
@@ -52,7 +53,7 @@ configAssign(target, ...sources, options)
 	Default is `false`.
 	- **`stopOnError <boolean>`**: Whether or not to abort the copying task when an error occurs.  
 	Default is `true`.
-	- **`nonEnumerable <boolean>`**: Whether or not to copy non-enumerable properties.  
+	- **`nonEnumerable <boolean>`**:  copy non-enumerable properties.  
 	Default is `false`.
 	- **`filter <Function> | <null>`**: Function used to filter properties. The function should return `true` or `false`, indicating whether the property should or shouldn't be copied, respectively. If `null`, all properties being copied. The function gets called for each property of the source objects, and receives the following arguments:
 		- **`property <string> | <symbol>`**: The property being copied
@@ -60,13 +61,17 @@ configAssign(target, ...sources, options)
 		- **`source <Object>`**: The current `source` object
 
 		Default is `null`.
+	- **`reverse <boolean>`**: Whether or not to keep the leftmost value (instead of the rightmost) of the properties with the same key.
+		>**Note!** This option **doesn't** change the *order* of assigning properties.
+
+		Default is `false`.
 ### 2.3 Return value <a id="usage-return">
 - On success, the function returns the target object. It is the same object as the `target` given as argument, unless the `mutate` option set to `false`. In that case, a cloned object get returned.
 - On failure, returns `false` if the `returnBool` option set to `true`
 ### 2.4 Throws <a id="usage-throws">
 - [`Error`]([https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)) on failure, if the `returnBool` option is `false`
 ## 3. Examples <a id="examples">
-Works like `Object.assign`:
+Works like [`Object.assign`][assign]:
 ```js
 const result = configAssign({foo:0},{bar:1},{baz:2},{/* options */})
 
@@ -208,23 +213,23 @@ console.log(target) //Foo{}
 console.log(result) //Foo{bar:1}
 console.log(result instanceof Foo) //false ?!
 ```
-Whether or not to copy getters / setters? It relies on the `define` option:
+Forwards or backwards? It relies on the `reverse` option:
 ```js
-const target = {bar:0, set foo(value){this.bar=value}}
-const source = {baz:1, get foo(){return this.baz}}, 
+const target = {foo:0,bar:0}
+const source = {bar:1,baz:1}
 
-//With `define: false`
+//With reverse: false (default), keeping the rightmost -->
 {
-	const result = configAssign(target,source,{define:false,mutate:false}) //Trigger getters and setters
+  const result = configAssign(target,source,{reverse:false,mutate:false})
 
-	console.log(result) //{get foo(){...}, bar:1, baz:1}
+  console.log(target) //{foo:0,bar:1,baz:1}
 }
 
-//With `define: true` (default)
+//With reverse: true, keeping the leftmost <--
 {
-	const result = configAssign(target,source,{define:true,mutate:false}) //Copy getters and setters
+  const result = configAssign(target,source,{reverse:false,mutate:false})
 
-	console.log(result) //{get foo(){...}, set foo(){...}, bar:0, baz:1}
+  console.log(target) //{foo:0,bar:0,baz:1}
 }
 ```
 ## 4. All together... <a id="all_together">

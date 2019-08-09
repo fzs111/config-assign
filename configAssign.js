@@ -13,7 +13,8 @@ module.exports = function configAssign(target, ...args) {
       returnBool: false,    //whether or not to return boolean false on failure instead of throwing
       stopOnError: true,    //whether or not to stop copying on error
       nonEnumerable: false, //whether or not to copy non-enumerable properties
-      filter: null
+      filter: null,         //function used to filter properties
+      reverse: false        //whether or not to keep the leftmost instead of the rightmost value on same keys
     }, args.length > 1 ? args.splice(args.length - 1, 1)[0] : {}),
     get = (obj, prop) => {
       const output = Object.getOwnPropertyDescriptor(obj, prop);
@@ -41,12 +42,12 @@ module.exports = function configAssign(target, ...args) {
         return Reflect.set(obj, prop, value.value) && success;
       };
     };
-  if (!options.mutate){
-    const clone=(obj)=>{
-	    let proto=Object.getPrototypeOf(obj);
-	    const desc=Object.getOwnPropertyDescriptors(obj);
-	    if(proto) proto=clone(proto);
-	    return Object.create(proto,desc);
+  if (!options.mutate) {
+    const clone = (obj) => {
+      let proto = Object.getPrototypeOf(obj);
+      const desc = Object.getOwnPropertyDescriptors(obj);
+      if (proto) proto = clone(proto);
+      return Object.create(proto, desc);
     };
     target = clone(target);
   };
@@ -54,6 +55,7 @@ module.exports = function configAssign(target, ...args) {
     const foreach = prop => {
       if (options.stopOnError && !success) return;
       if (!options.nonEnumerable && !get(prop).enumerable) return;
+      if (options.reverse && Object.prototype.hasOwnProperty.call(target, prop)) return;
       if (options.filter && !options.filter.call(target, prop, target, source)) return;
       if (Math.floor(options.recursive) && source !== target && typeof get(target, prop).value === "object" && typeof get(source, prop).value === "object") {
         const value = configAssign(get(target, prop).value, get(source, prop).value, Object.assign({}, options, {
