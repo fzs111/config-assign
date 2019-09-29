@@ -43,6 +43,13 @@ module.exports = function configAssign(target, ...args) {
       };
     },
     isObject = value => typeof value === "object" && value === Object(value);
+  if (target !== Object(target) || !args.every(source=>source === Object(source))) {
+    if(options.returnBool){
+      return false;
+    } else {
+      throw new TypeError('Target and sources must be objects, primitive given');
+    }
+  }
   if (!options.mutate) {
     const clone = (obj) => {
       let proto = Object.getPrototypeOf(obj);
