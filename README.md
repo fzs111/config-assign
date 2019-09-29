@@ -43,6 +43,8 @@ configAssign(target, ...sources, options)
 	Default is `true`.
 	- **`mutate <boolean>`**: Whether or not to mutate the `target` object.  <a id="usage-syntax-mutate">
 		>**Warning!** Disabling this option won't preserve object's method closures and constructors! Calling a closure-based method, or using  `instanceof` on the newly created object, probably won't return the expected result, so it should be used only with plain objects.
+	        
+		>**Note!** Setting this option to `false` doesn't guarantee that the target object cloned deeply! Only the objects modified by `configAssign` are cloned.
 		
 		Default is `true`.
 	- **`symbols <boolean>`**: Whether or not to copy symbol properties.  
@@ -70,6 +72,7 @@ configAssign(target, ...sources, options)
 - On failure, returns `false` if the `returnBool` option set to `true`
 ### 2.4 Throws <a id="usage-throws">
 - [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) on failure, if the `returnBool` option is `false`
+- [`TypeError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError) if one of the `source` parameters is not an object and `returnBool` option is `false`
 ## 3. Examples <a id="examples">
 Works like [`Object.assign`][assign]:
 ```js
