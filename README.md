@@ -37,7 +37,7 @@ configAssign(target, ...sources, options)
 - **`target <Object>`**:  The target object
 - **`source <Object>`**, **`...sources <Object>`**: The source object(s)
 - **`options <Object>`**: A configuration object containing (some of) the following values:
-	- **`descriptors <boolean>`**: Whether or not to copy [accessor property descriptors]([https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty#Description](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty#Description)).  
+	- **`descriptors <boolean>`**: Whether or not to copy [accessor property descriptors](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty#Description).  
 	Default is `true`.
 	- **`define <boolean>`**: Whether or not to use `defineProperty` and `getOwnPropertyDescriptors` instead of `[[Set]]` and `[[Get]]`. If `false`, `configAssign` will trigger getters and setters, while if `true`, it will copy them.  
 	Default is `true`.
@@ -69,7 +69,7 @@ configAssign(target, ...sources, options)
 - On success, the function returns the target object. It is the same object as the `target` given as argument, unless the `mutate` option set to `false`. In that case, a cloned object get returned.
 - On failure, returns `false` if the `returnBool` option set to `true`
 ### 2.4 Throws <a id="usage-throws">
-- [`Error`]([https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)) on failure, if the `returnBool` option is `false`
+- [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) on failure, if the `returnBool` option is `false`
 ## 3. Examples <a id="examples">
 Works like [`Object.assign`][assign]:
 ```js
@@ -227,7 +227,7 @@ const source = {bar:1,baz:1}
 
 //With reverse: true, keeping the leftmost <--
 {
-  const result = configAssign(target,source,{reverse:false,mutate:false})
+  const result = configAssign(target,source,{reverse:true,mutate:false})
 
   console.log(target) //{foo:0,bar:0,baz:1}
 }
