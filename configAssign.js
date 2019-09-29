@@ -41,11 +41,17 @@ module.exports = function configAssign(target, ...args) {
         };
         return Reflect.set(obj, prop, value.value) && success;
       };
-    };
+    },
+    isObject = value => typeof value === "object" && value === Object(value);
   if (!options.mutate) {
     const clone = (obj) => {
       let proto = Object.getPrototypeOf(obj);
       const desc = Object.getOwnPropertyDescriptors(obj);
+      Object.keys(desc).forEach(key => {
+        if (isObject(desc[key].value)) {
+          desc[key].value=clone(desc[key].value);
+        };
+      });
       if (proto) proto = clone(proto);
       return Object.create(proto, desc);
     };
@@ -57,13 +63,16 @@ module.exports = function configAssign(target, ...args) {
       if (!options.nonEnumerable && !get(prop).enumerable) return;
       if (options.reverse && Object.prototype.hasOwnProperty.call(target, prop)) return;
       if (options.filter && !options.filter.call(target, prop, target, source)) return;
-      if (Math.floor(options.recursive) && source !== target && typeof get(target, prop).value === "object" && typeof get(source, prop).value === "object") {
+      if (Math.floor(options.recursive) && source !== target && isObject(get(target, prop).value) && isObject(get(source, prop).value)) {
         const value = configAssign(get(target, prop).value, get(source, prop).value, Object.assign({}, options, {
           returnBool: true,
-          recursive: options.recursive - 1,
-          mutate: false
+          recursive: options.recursive - 1
         }));
-        success = value && set(target, prop, {value}) && success;
+        if (options.mutate) {
+          success = value && set(target, prop, {value}) && success;
+        } else {
+          success = value && success;
+        };
       } else {
         success = set(target, prop, get(source, prop)) && success;
       };
